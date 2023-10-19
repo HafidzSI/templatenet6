@@ -1,0 +1,59 @@
+<!-- For more info on central package management go to https://devblogs.microsoft.com/nuget/introducing-central-package-management/ -->
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageVersion Include="Ardalis.GuardClauses" Version="4.1.1" />
+    <PackageVersion Include="AspNetCore.HealthChecks.AzureServiceBus" Version="6.1.0" />
+    <PackageVersion Include="AspNetCore.HealthChecks.Network" Version="6.0.4" />
+    <PackageVersion Include="AspNetCore.HealthChecks.NpgSql" Version="6.0.2" />
+    <PackageVersion Include="AspNetCore.HealthChecks.Redis" Version="6.0.4" />
+    <PackageVersion Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageVersion Include="Azure.Messaging.EventHubs.Processor" Version="5.9.2" />
+    <PackageVersion Include="ClosedXML" Version="0.102.1" />
+    <PackageVersion Include="CsvHelper" Version="30.0.1" />
+    <PackageVersion Include="FluentAssertions" Version="6.12.0" />
+    <PackageVersion Include="FluentDateTime" Version="2.1.0" />
+    <PackageVersion Include="FluentValidation" Version="11.7.1" />
+    <PackageVersion Include="FluentValidation.AspNetCore" Version="11.3.0" />
+    <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="11.7.1" />
+    <PackageVersion Include="JsonApiSerializer" Version="1.7.4" />
+    <PackageVersion Include="MediatR" Version="12.1.1" />
+    <PackageVersion Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.21.0" />
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.20" />
+    <PackageVersion Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.20" />
+    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+    <PackageVersion Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.20" />
+    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.20" />
+    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.1.0" />
+    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.1.0" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="6.0.20" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.20"/>
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.20" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.20"/>
+    <PackageVersion Include="Microsoft.Extensions.PlatformAbstractions" Version="1.1.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.7.2" />
+    <PackageVersion Include="Moq" Version="4.20.69" />
+    <PackageVersion Include="NSwag.AspNetCore" Version="13.20.0" />
+    <PackageVersion Include="NUnit" Version="3.13.3" />
+    <PackageVersion Include="NUnit3TestAdapter" Version="4.5.0"/>
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.8" />
+    <PackageVersion Include="Polly" Version="7.2.4" />
+    <PackageVersion Include="Polly.Contrib.WaitAndRetry" Version="1.1.1" />
+    <PackageVersion Include="Quartz.AspNetCore" Version="3.7.0" />
+    <PackageVersion Include="Quartz.Plugins" Version="3.7.0" />
+    <PackageVersion Include="Quartz.Serialization.Json" Version="3.7.0" />
+    <PackageVersion Include="Respawn" Version="6.1.0" />
+    <PackageVersion Include="Respawn.Postgres" Version="10.0.0" />
+    <PackageVersion Include="Scrutor" Version="4.2.2" />
+    <PackageVersion Include="Serilog.AspNetCore" Version="6.1.0" />
+    <PackageVersion Include="Shouldly" Version="4.2.1" />
+    <PackageVersion Include="SonarAnalyzer.CSharp" Version="9.6.0.74858" />
+    <PackageVersion Include="StackExchange.Redis" Version="2.6.122" />
+    <PackageVersion Include="StyleCop.Analyzers" Version="1.1.118" />
+    <PackageVersion Include="System.Linq.Dynamic.Core" Version="1.3.4" />
+    <PackageVersion Include="Z.EntityFramework.Plus.EFCore" Version="6.22.4" />
+    <PackageVersion Include="nunit" Version="3.13.3" />
+  </ItemGroup>
+</Project>

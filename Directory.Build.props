@@ -1,0 +1,19 @@
+<Project>
+  <PropertyGroup>
+    <CodeAnalysisRuleSet>$(SolutionDir)/StyleCop.ruleset</CodeAnalysisRuleSet>
+    <SolutionDir>$(MSBuildThisFileDirectory)</SolutionDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference 
+      Include="StyleCop.Analyzers"
+      PrivateAssets="all" 
+      Condition="$(MSBuildProjectExtension) == '.csproj'" 
+    />
+    <PackageReference
+      Include="SonarAnalyzer.CSharp"
+      PrivateAssets="all"
+      Condition="$(MSBuildProjectExtension) == '.csproj'"
+    />
+  </ItemGroup>
+</Project>

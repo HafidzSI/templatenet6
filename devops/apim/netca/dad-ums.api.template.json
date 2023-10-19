@@ -1,0 +1,146 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "ApimServiceName": {
+      "type": "string"
+    },
+    "LinkedTemplatesUrlQueryString": {
+      "type": "string"
+    },
+    "PolicyXMLBaseUrl": {
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "properties": {
+        "isCurrent": true,
+        "subscriptionRequired": true,
+        "displayName": "DAD-UMS",
+        "path": "dad/ums",
+        "protocols": [
+          "https"
+        ]
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/dad-ums')]",
+      "type": "Microsoft.ApiManagement/service/apis",
+      "apiVersion": "2019-01-01",
+      "dependsOn": []
+    },
+    {
+      "properties": {
+        "templateParameters": [],
+        "request": {
+          "description": "Request Login",
+          "queryParameters": [],
+          "headers": [],
+          "representations": []
+        },
+        "responses": [],
+        "displayName": "login",
+        "method": "POST",
+        "urlTemplate": "/api/login"
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/dad-ums/login')]",
+      "type": "Microsoft.ApiManagement/service/apis/operations",
+      "apiVersion": "2019-01-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis', parameters('ApimServiceName'), 'dad-ums')]"
+      ]
+    },
+    {
+      "properties": {
+        "templateParameters": [],
+        "request": {
+          "description": "Request Refresh Token",
+          "queryParameters": [],
+          "headers": [],
+          "representations": []
+        },
+        "responses": [],
+        "displayName": "refresh-token",
+        "method": "POST",
+        "urlTemplate": "/api/refreshtoken"
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/dad-ums/refresh-token')]",
+      "type": "Microsoft.ApiManagement/service/apis/operations",
+      "apiVersion": "2019-01-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis', parameters('ApimServiceName'), 'dad-ums')]"
+      ]
+    },
+    {
+      "properties": {
+        "templateParameters": [],
+        "description": "",
+        "request": {
+          "description": "Request Term Version",
+          "queryParameters": [],
+          "headers": [],
+          "representations": []
+        },
+        "responses": [],
+        "displayName": "termandcondition",
+        "method": "GET",
+        "urlTemplate": "/api/termandcondition"
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/dad-ums/get-termandcondition')]",
+      "type": "Microsoft.ApiManagement/service/apis/operations",
+      "apiVersion": "2019-01-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis', parameters('ApimServiceName'), 'dad-ums')]"
+      ]
+    },
+    {
+      "properties": {
+        "templateParameters": [
+          {
+            "name": "termVersion",
+            "type": "",
+            "required": true,
+            "values": []
+          }
+        ],
+        "description": "",
+        "request": {
+          "description": "Put Term Version",
+          "queryParameters": [],
+          "headers": [],
+          "representations": []
+        },
+        "responses": [],
+        "displayName": "termandcondition",
+        "method": "PUT",
+        "urlTemplate": "/api/user/termandcondition/{termVersion}"
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/dad-ums/put-termandcondition')]",
+      "type": "Microsoft.ApiManagement/service/apis/operations",
+      "apiVersion": "2019-01-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis', parameters('ApimServiceName'), 'dad-ums')]"
+      ]
+    },
+    {
+      "properties": {
+        "value": "[concat(parameters('PolicyXMLBaseUrl'), '/dad-ums-apiPolicy.xml', parameters('LinkedTemplatesUrlQueryString'))]",
+        "format": "rawxml-link"
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/dad-ums/policy')]",
+      "type": "Microsoft.ApiManagement/service/apis/policies",
+      "apiVersion": "2019-01-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis', parameters('ApimServiceName'), 'dad-ums')]"
+      ]
+    },
+    {
+      "properties": {},
+      "name": "[concat(parameters('ApimServiceName'), '/DAD/dad-ums')]",
+      "type": "Microsoft.ApiManagement/service/products/apis",
+      "apiVersion": "2019-01-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis', parameters('ApimServiceName'), 'dad-ums')]"
+      ]
+    }
+  ]
+}

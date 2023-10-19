@@ -1,0 +1,35 @@
+version: '3.4'
+
+services:
+  netca:
+    image: netca:#{Build.BuildNumber}#
+    ports:
+      - "8080:8080"
+    environment:
+      ASPNETCORE_URLS: "http://*:8080"
+    build:
+      context: ..
+      dockerfile: ./DevOps/Dockerfile
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: "1"
+          memory: "0.5G"
+        reservations:
+          cpus: "0.5"
+          memory: "1G"
+      restart_policy:
+        condition: "no"
+    healthcheck:
+      test: curl --fail http://localhost:8080/health || exit 1
+      interval: 3s
+      retries: 2
+      start_period: 62s
+      timeout: 60s
+    restart: always
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    read_only: true

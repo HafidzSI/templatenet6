@@ -1,0 +1,10 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+## husky task runner examples -------------------
+## Note : for local installation use 'dotnet' prefix. e.g. 'dotnet husky'
+
+## run all tasks
+dotnet husky run --name dotnet-format
+dotnet husky run --name dotnet-build
+#dotnet husky run --name dotnet-test

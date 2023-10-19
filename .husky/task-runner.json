@@ -1,0 +1,19 @@
+{
+  "tasks": [
+    {
+      "name": "dotnet-format",
+      "command": "dotnet",
+      "args": [ "format", "NetCa.sln" ]
+    },
+    {
+      "name": "dotnet-build",
+      "command": "dotnet",
+      "args": [ "build", "NetCa.sln" ]
+    },
+    {
+      "name": "dotnet-test",
+      "command": "dotnet",
+      "args": [ "test", "NetCa.sln" ]
+    }
+  ]
+}

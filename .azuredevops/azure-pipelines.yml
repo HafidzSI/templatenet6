@@ -1,0 +1,266 @@
+# NetCa Pipeline
+#
+# Note:
+#
+# If the branch used is develop use -DEV suffix will be used for the development environment,
+# then use -TEST suffix will be used for the test environment
+# and variables with the -PROD suffix will be used for the production environment.
+#
+# Example (in branch develop):
+# APIM-SECRET-DEV: xxx (will set apim secret in development environment)
+# APIM-SECRET-PROD: xxx (not apply because branch is not master)
+#
+# Example 2 (in branch master):
+# INSIGHT-KEY-DEV: xxx (will set variable insight key for test environment)
+# INSIGHT-KEY-PROD: xxx (will set variable insight key for production environment)
+#
+# Parameter Guide:
+#
+# RUN-TEST                               : Enabling to Running Unit Tests (true/false)
+# EXPORT-SCRIPT-KEY                      : Setup secret key
+#
+# Global Variable Guide:
+#
+# APP-NAME                               : Name of project (Ex. MSCoip)
+# ENVIRONMENT                            : Default of environment is Development
+# CONSTRING                              : Connection String for Unit Test purpose
+# MAJOR-MINOR                            : For Versioning (Major.Minor)
+# PATCH                                  : For Versioning (Patch)
+# AGENT-POOL                             : Agent Pool Used
+#
+# Variable Guide:
+#
+# ACR-NAME-(SUFFIX)                      : Azure Container Registry Name (Adding -PROD for Production Value)
+# AKS-NAME-(SUFFIX)                      : Azure Kubernetes Service Name (Adding -PROD for Production Value)
+# APIM-SERVICE-NAME-(SUFFIX)             : Azure APIM Service Name (Adding -PROD for Production Value)
+# AZURE-SUBSCRIPTION-(SUFFIX)            : Azure Subscription for Deployment (Adding -PROD for Production Value)
+# AZURE-SUBSCRIPTION-APIM-(SUFFIX)       : Azure Subscription for APIM (Adding -PROD for Production Value)
+# BLOB-(SUFFIX)                          : Blob Secret (Adding -PROD for Production Value)
+# BLOB-URL-(SUFFIX)                      : Url Blob (Adding -PROD for Production Value)
+# HOST-(SUFFIX)                          : Host Name Used (Adding -PROD for Production Value)
+# NAMESPACE-(SUFFIX)                     : Namespace of Kubernetes (Adding -PROD for Production Value)
+# RESOURCE-GROUP-(SUFFIX)                : Azure Resource Group (Adding -PROD for Production Value)
+# RESOURCE-GROUP-APIM-(SUFFIX)           : Azure Resource Group APIM (Adding -PROD for Production Value)
+# AUTHORIZATIONSERVER-ADDRESS-(SUFFIX)   : Authorization Url Address (Adding -PROD for Production Value)
+# AUTHORIZATIONSERVER-GATEWAY-(SUFFIX)   : Authorization Url Gateway (Adding -PROD for Production Value)
+# BOT-ADDRESS-(SUFFIX)                   : Bot Address (Adding -PROD for Production Value)
+# BOT-SERVICE-DOMAIN-(SUFFIX)            : Bot Service Domain (Adding -PROD for Production Value)
+#
+# APP-URLWEB-(SUFFIX)          : App Url (Adding -PROD for Production Value)
+# APIM-SECRET-(SUFFIX)                   : Azure APIM Subscription Product (Adding -PROD for Production Value)
+# DATABASE-CONNECTION-(SUFFIX)           : Database Connection (Adding -PROD for Production Value)
+# EVENTHUB-CONNECTION-UCP-(SUFFIX)       : Eventhub Connection (UCP) (Adding -PROD for Production Value)
+# STORAGE-CONNECTION-UCP-(SUFFIX)        : Azure Storage Connection for Eventhub UCP (Adding -PROD for Production Value)
+# INSIGHT-KEY-(SUFFIX)                   : App Insight Key (Adding -PROD for Production Value)
+# RATELIMIT-CALLS-(SUFFIX)               : Rate Limit Calls for APIM (Adding -PROD for Production Value)
+# RATELIMIT-NEWPERIOD-(SUFFIX)           : Rate Limit New Period for APIM (Adding -PROD for Production Value)
+# UMS-CLIENTID-(SUFFIX)                  : UMS App Client Id (Adding -PROD for Production Value)
+# UMS-CLIENTSECRET-(SUFFIX)              : UMS App Client Secret (Adding -PROD for Production Value)
+# REDIS-CONNECTION-(SUFFIX)              : Redis Connection (Adding -PROD for Production Value)
+#
+# Internal Variable Guide:
+#
+# CUSTOM-APIM                            : Use Comment tag if not use some apim configuration
+
+trigger:
+  branches:
+    include:
+      - refs/heads/develop
+
+name: $(major-minor).$(patch)$(suffix)
+
+resources:
+  repositories:
+    - repository: AzurePipelines
+      type: git
+      name: "Mobile Web Development/AzurePipelines"
+      ref: refs/heads/main
+
+variables:
+  app-name-lower: $[lower(variables['APP-NAME'])]
+  app-version: "$(Build.BuildNumber)"
+  tag: "$(Build.BuildNumber)"
+  custom-apim: -UmsClientId $(UMS-CLIENTID)
+    -UmsClientSecret $(UMS-CLIENTSECRET)
+    -RateLimitCalls $(RATELIMIT-CALLS)
+    -RateLimitNewPeriod $(RATELIMIT-NEWPERIOD)
+
+stages:
+  - ${{ if not(eq(variables['Build.SourceBranch'], 'refs/heads/master')) }}:
+      - template: web-mobile/backend/dotnet-pipelines.yaml@AzurePipelines
+        parameters:
+          RUN-TEST: false
+          EXPORT-SCRIPT-KEY:
+            export DATABASE_CONNECTION="$(DATABASE-CONNECTION-DEV)" &&
+            export EVENTHUB_CONNECTION_UCP="$(EVENTHUB-CONNECTION-UCP-DEV)" &&
+            export STORAGE_CONNECTION_UCP="$(STORAGE-CONNECTION-UCP-DEV)" &&
+            export REDIS_CONNECTION="$(REDIS-CONNECTION-DEV)" &&
+            export APIM_SECRET="$(APIM-SECRET-DEV)" &&
+            export INSIGHT_KEY="$(INSIGHT-KEY-DEV)"
+          VARIABLES:
+            - group: AKS
+            - name: name-space
+              value: "$(NAMESPACE-DEV)"
+            - name: aks-name
+              value: "$(AKS-NAME-DEV)"
+            - name: acr-name
+              value: "$(ACR-NAME-DEV)"
+            - name: app-urlweb
+              value: "$(APP-URLWEB-DEV)"
+            - name: azure-subscription
+              value: "$(AZURE-SUBSCRIPTION-DEV)"
+            - name: azure-subscription-apim
+              value: "$(AZURE-SUBSCRIPTION-APIM-DEV)"
+            - name: apim-service-name
+              value: "$(APIM-SERVICE-NAME-DEV)"
+            - name: authorizationserver-gateway
+              value: "$(AUTHORIZATIONSERVER-GATEWAY-DEV)"
+            - name: authorizationserver-address
+              value: "$(AUTHORIZATIONSERVER-ADDRESS-DEV)"
+            - name: bot-servicedomain
+              value: "$(BOT-SERVICEDOMAIN-DEV)"
+            - name: bot-address
+              value: "$(BOT-ADDRESS-DEV)"
+            - name: redis-connection
+              value: "$(REDIS-CONNECTION-DEV)"
+            - name: apim-secret
+              value: "$(APIM-SECRET-DEV)"
+            - name: insight-key
+              value: "$(INSIGHT-KEY-DEV)"
+            - name: ums-clientid
+              value: "$(UMS-CLIENTID-DEV)"
+            - name: ums-clientsecret
+              value: "$(UMS-CLIENTSECRET-DEV)"
+            - name: ratelimit-calls
+              value: "$(RATELIMIT-CALLS-DEV)"
+            - name: ratelimit-newperiod
+              value: "$(RATELIMIT-NEWPERIOD-DEV)"
+            - name: resource-group
+              value: "$(RESOURCE-GROUP-DEV)"
+            - name: resource-group-apim
+              value: "$(RESOURCE-GROUP-APIM-DEV)"
+            - name: blob
+              value: "$(BLOB-DEV)"
+            - name: blob-url
+              value: "$(BLOB-URL-DEV)"
+            - name: host
+              value: "$(HOST-DEV)"
+
+  - ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/master') }}:
+      - template: web-mobile/backend/dotnet-pipelines.yaml@AzurePipelines
+        parameters:
+          ENVIRONMENT: Test
+          EXPORT-SCRIPT-KEY:
+            export DATABASE_CONNECTION="$(DATABASE-CONNECTION-TEST)" &&
+            export EVENTHUB_CONNECTION_UCP="$(EVENTHUB-CONNECTION-UCP-TEST)" &&
+            export STORAGE_CONNECTION_UCP="$(STORAGE-CONNECTION-UCP-TEST)" &&
+            export REDIS_CONNECTION="$(REDIS-CONNECTION-TEST)" &&
+            export APIM_SECRET="$(APIM-SECRET-TEST)" &&
+            export INSIGHT_KEY="$(INSIGHT-KEY-TEST)"
+          VARIABLES:
+            - group: AKS
+            - name: name-space
+              value: "$(NAMESPACE-TEST)"
+            - name: aks-name
+              value: "$(AKS-NAME-TEST)"
+            - name: acr-name
+              value: "$(ACR-NAME-TEST)"
+            - name: app-urlweb
+              value: "$(APP-URLWEB-TEST)"
+            - name: azure-subscription
+              value: "$(AZURE-SUBSCRIPTION-TEST)"
+            - name: azure-subscription-apim
+              value: "$(AZURE-SUBSCRIPTION-APIM-TEST)"
+            - name: apim-service-name
+              value: "$(APIM-SERVICE-NAME-TEST)"
+            - name: authorizationserver-gateway
+              value: "$(AUTHORIZATIONSERVER-GATEWAY-TEST)"
+            - name: authorizationserver-address
+              value: "$(AUTHORIZATIONSERVER-ADDRESS-TEST)"
+            - name: bot-servicedomain
+              value: "$(BOT-SERVICEDOMAIN-TEST)"
+            - name: bot-address
+              value: "$(BOT-ADDRESS-TEST)"
+            - name: redis-connection
+              value: "$(REDIS-CONNECTION-TEST)"
+            - name: apim-secret
+              value: "$(APIM-SECRET-TEST)"
+            - name: insight-key
+              value: "$(INSIGHT-KEY-TEST)"
+            - name: ums-clientid
+              value: "$(UMS-CLIENTID-TEST)"
+            - name: ums-clientsecret
+              value: "$(UMS-CLIENTSECRET-TEST)"
+            - name: ratelimit-calls
+              value: "$(RATELIMIT-CALLS-TEST)"
+            - name: ratelimit-newperiod
+              value: "$(RATELIMIT-NEWPERIOD-TEST)"
+            - name: resource-group
+              value: "$(RESOURCE-GROUP-TEST)"
+            - name: resource-group-apim
+              value: "$(RESOURCE-GROUP-APIM-TEST)"
+            - name: blob
+              value: "$(BLOB-TEST)"
+            - name: blob-url
+              value: "$(BLOB-URL-TEST)"
+            - name: host
+              value: "$(HOST-TEST)"
+
+      - template: web-mobile/backend/dotnet-pipelines.yaml@AzurePipelines
+        parameters:
+          ENVIRONMENT: Production
+          EXPORT-SCRIPT-KEY:
+            export DATABASE_CONNECTION="$(DATABASE-CONNECTION-PROD)" &&
+            export EVENTHUB_CONNECTION_UCP="$(EVENTHUB-CONNECTION-UCP-PROD)" &&
+            export STORAGE_CONNECTION_UCP="$(STORAGE-CONNECTION-UCP-PROD)" &&
+            export REDIS_CONNECTION="$(REDIS-CONNECTION-PROD)" &&
+            export APIM_SECRET="$(APIM-SECRET-PROD)" &&
+            export INSIGHT_KEY="$(INSIGHT-KEY-PROD)"
+          VARIABLES:
+            - group: AKS
+            - name: name-space
+              value: "$(NAMESPACE-PROD)"
+            - name: aks-name
+              value: "$(AKS-NAME-PROD)"
+            - name: acr-name
+              value: "$(ACR-NAME-PROD)"
+            - name: app-urlweb
+              value: "$(APP-URLWEB-PROD)"
+            - name: azure-subscription
+              value: "$(AZURE-SUBSCRIPTION-PROD)"
+            - name: azure-subscription-apim
+              value: "$(AZURE-SUBSCRIPTION-APIM-PROD)"
+            - name: apim-service-name
+              value: "$(APIM-SERVICE-NAME-PROD)"
+            - name: authorizationserver-gateway
+              value: "$(AUTHORIZATIONSERVER-GATEWAY-PROD)"
+            - name: authorizationserver-address
+              value: "$(AUTHORIZATIONSERVER-ADDRESS-PROD)"
+            - name: bot-servicedomain
+              value: "$(BOT-SERVICEDOMAIN-PROD)"
+            - name: bot-address
+              value: "$(BOT-ADDRESS-PROD)"
+            - name: redis-connection
+              value: "$(REDIS-CONNECTION-PROD)"
+            - name: apim-secret
+              value: "$(APIM-SECRET-PROD)"
+            - name: insight-key
+              value: "$(INSIGHT-KEY-PROD)"
+            - name: ums-clientid
+              value: "$(UMS-CLIENTID-PROD)"
+            - name: ums-clientsecret
+              value: "$(UMS-CLIENTSECRET-PROD)"
+            - name: ratelimit-calls
+              value: "$(RATELIMIT-CALLS-PROD)"
+            - name: ratelimit-newperiod
+              value: "$(RATELIMIT-NEWPERIOD-PROD)"
+            - name: resource-group
+              value: "$(RESOURCE-GROUP-PROD)"
+            - name: resource-group-apim
+              value: "$(RESOURCE-GROUP-APIM-PROD)"
+            - name: blob
+              value: "$(BLOB-PROD)"
+            - name: blob-url
+              value: "$(BLOB-URL-PROD)"
+            - name: host
+              value: "$(HOST-PROD)"

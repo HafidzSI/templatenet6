@@ -1,0 +1,39 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "ApimServiceName": {
+      "type": "string"
+    },
+    "RateLimitCalls": {
+      "type": "string"
+    },
+    "RateLimitNewPeriod": {
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "properties": {
+        "tags": [],
+        "secret": false,
+        "displayName": "dad-netca-calls",
+        "value": "[parameters('RateLimitCalls')]"
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/dad-netca-calls')]",
+      "type": "Microsoft.ApiManagement/service/properties",
+      "apiVersion": "2019-01-01"
+    },
+    {
+      "properties": {
+        "tags": [],
+        "secret": false,
+        "displayName": "dad-netca-new-period",
+        "value": "[parameters('RateLimitNewPeriod')]"
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/dad-netca-new-period')]",
+      "type": "Microsoft.ApiManagement/service/properties",
+      "apiVersion": "2019-01-01"
+    }
+  ]
+}

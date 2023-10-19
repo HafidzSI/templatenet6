@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="My StyleCop rules" ToolsVersion="17.0">
+  <Include Path="stylecop.analyzers.ruleset" Action="Default" />
+  <Rules AnalyzerId="SonarAnalyzer.CSharp" RuleNamespace="SonarAnalyzer.CSharp">
+    <Rule Id="S100" Action="Warning" />
+    <Rule Id="S1128" Action="Warning" />
+    <Rule Id="S1172" Action="None" />
+    <Rule Id="S1854" Action="None" />
+    <Rule Id="S1858" Action="Warning" />
+    <Rule Id="S2148" Action="Warning" />
+    <Rule Id="S2259" Action="None" />
+    <Rule Id="S3052" Action="Warning" />
+    <Rule Id="S3235" Action="Warning" />
+    <Rule Id="S3240" Action="Warning" />
+    <Rule Id="S3254" Action="Warning" />
+    <Rule Id="S3257" Action="Warning" />
+    <Rule Id="S3353" Action="Warning" />
+    <Rule Id="S3532" Action="Warning" />
+    <Rule Id="S3902" Action="Warning" />
+    <Rule Id="S4005" Action="Warning" />
+  </Rules>
+  <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers">
+    <Rule Id="SA0001" Action="None" />
+    <Rule Id="SA1101" Action="None" />
+    <Rule Id="SA1115" Action="None" />
+    <Rule Id="SA1118" Action="None" />
+    <Rule Id="SA1120" Action="None" />
+    <Rule Id="SA1122" Action="None" />
+    <Rule Id="SA1123" Action="None" />
+    <Rule Id="SA1124" Action="None" />
+    <Rule Id="SA1200" Action="None" />
+    <Rule Id="SA1201" Action="None" />
+    <Rule Id="SA1202" Action="None" />
+    <Rule Id="SA1203" Action="None" />
+    <Rule Id="SA1204" Action="None" />
+    <Rule Id="SA1309" Action="None" />
+    <Rule Id="SA1313" Action="None" />
+    <Rule Id="SA1402" Action="None" />
+    <Rule Id="SA1413" Action="None" />
+    <Rule Id="SA1503" Action="None" />
+    <Rule Id="SA1509" Action="None" />
+    <Rule Id="SA1600" Action="None" />
+    <Rule Id="SA1602" Action="None" />
+    <Rule Id="SA1610" Action="None" />
+    <Rule Id="SA1614" Action="None" />
+    <Rule Id="SA1616" Action="None" />
+    <Rule Id="SA1622" Action="None" />
+    <Rule Id="SA1629" Action="None" />
+    <Rule Id="SA1633" Action="None" />
+    <Rule Id="SA1649" Action="None" />
+    <Rule Id="SX1309S" Action="Warning" />
+  </Rules>
+</RuleSet>

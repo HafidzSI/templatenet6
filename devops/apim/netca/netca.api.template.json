@@ -1,0 +1,57 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "ApimServiceName": {
+      "type": "string"
+    },
+    "BackEndUrl": {
+      "type": "string"
+    },
+    "LinkedTemplatesUrlQueryString": {
+      "type": "string"
+    },
+    "PolicyXMLBaseUrl": {
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "properties": {
+        "isCurrent": true,
+        "subscriptionRequired": true,
+        "displayName": "DAD-NETCA",
+        "path": "dad/netca",
+        "protocols": [
+          "https"
+        ],
+        "value": "[concat(parameters('BackEndUrl'), '/swagger/v1/swagger.json')]",
+        "format": "openapi-link"
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/netca')]",
+      "type": "Microsoft.ApiManagement/service/apis",
+      "apiVersion": "2021-01-01-preview",
+      "dependsOn": []
+    },
+    {
+      "properties": {
+        "value": "[concat(parameters('PolicyXMLBaseUrl'), '/Backend-Policy.xml', parameters('LinkedTemplatesUrlQueryString'))]",
+        "format": "rawxml-link"
+      },
+      "name": "[concat(parameters('ApimServiceName'), '/netca/policy')]",
+      "type": "Microsoft.ApiManagement/service/apis/policies",
+      "apiVersion": "2021-01-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis', parameters('ApimServiceName'), 'netca')]"
+      ]
+    },
+    {
+      "name": "[concat(parameters('ApimServiceName'), '/DAD/netca')]",
+      "type": "Microsoft.ApiManagement/service/products/apis",
+      "apiVersion": "2021-01-01-preview",
+      "dependsOn": [
+        "[resourceId('Microsoft.ApiManagement/service/apis', parameters('ApimServiceName'), 'netca')]"
+      ]
+    }
+  ]
+}

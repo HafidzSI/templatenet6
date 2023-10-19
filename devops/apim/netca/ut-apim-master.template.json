@@ -1,0 +1,203 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "ApimServiceName": {
+      "type": "string"
+    },
+    "BackEndUrl": {
+      "type": "string"
+    },
+    "UmsClientId": {
+      "type": "string"
+    },
+    "UmsClientSecret": {
+      "type": "string"
+    },
+    "LinkedTemplatesBaseUrl": {
+      "type": "string"
+    },
+    "LinkedTemplatesUrlQueryString": {
+      "type": "string"
+    },
+    "PolicyXMLBaseUrl": {
+      "type": "string"
+    },
+    "RateLimitCalls": {
+      "type": "string"
+    },
+    "RateLimitNewPeriod": {
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('LinkedTemplatesBaseUrl'), '/dad-ums.namedValues.template.json', parameters('LinkedTemplatesUrlQueryString'))]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "ApimServiceName": {
+            "value": "[parameters('ApimServiceName')]"
+          },
+          "UmsClientId": {
+            "value": "[parameters('UmsClientId')]"
+          },
+          "UmsClientSecret": {
+            "value": "[parameters('UmsClientSecret')]"
+          }
+        }
+      },
+      "name": "dadUmsNamedValuesTemplate",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2018-05-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'backendsTemplate')]"
+      ]
+    },
+    {
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('LinkedTemplatesBaseUrl'), '/netca.namedValues.template.json', parameters('LinkedTemplatesUrlQueryString'))]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "ApimServiceName": {
+            "value": "[parameters('ApimServiceName')]"
+          },
+          "RateLimitCalls": {
+            "value": "[parameters('RateLimitCalls')]"
+          },
+          "RateLimitNewPeriod": {
+            "value": "[parameters('RateLimitNewPeriod')]"
+          }
+        }
+      },
+      "name": "namedValuesTemplate",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2018-05-01",
+      "dependsOn": []
+    },
+    {
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('LinkedTemplatesBaseUrl'), '/netca.products.template.json', parameters('LinkedTemplatesUrlQueryString'))]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "ApimServiceName": {
+            "value": "[parameters('ApimServiceName')]"
+          }
+        }
+      },
+      "name": "productsTemplate",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2018-05-01",
+      "dependsOn": []
+    },
+    {
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('LinkedTemplatesBaseUrl'), '/netca.backends.template.json', parameters('LinkedTemplatesUrlQueryString'))]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "ApimServiceName": {
+            "value": "[parameters('ApimServiceName')]"
+          },
+          "BackEndUrl": {
+            "value": "[parameters('BackEndUrl')]"
+          },
+          "PmmUrl": {
+            "value": "[parameters('PmmUrl')]"
+          }
+        }
+      },
+      "name": "backendsTemplate",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2018-05-01",
+      "dependsOn": []
+    },
+    {
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('LinkedTemplatesBaseUrl'), '/dad-ums.api.template.json', parameters('LinkedTemplatesUrlQueryString'))]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "ApimServiceName": {
+            "value": "[parameters('ApimServiceName')]"
+          },
+          "LinkedTemplatesUrlQueryString": {
+            "value": "[parameters('LinkedTemplatesUrlQueryString')]"
+          },
+          "PolicyXMLBaseUrl": {
+            "value": "[parameters('PolicyXMLBaseUrl')]"
+          }
+        }
+      },
+      "name": "dadUmsApiTemplate",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2018-05-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'productsTemplate')]"
+      ]
+    },
+    {
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('LinkedTemplatesBaseUrl'), '/netca.api.template.json', parameters('LinkedTemplatesUrlQueryString'))]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "ApimServiceName": {
+            "value": "[parameters('ApimServiceName')]"
+          },
+          "BackEndUrl": {
+            "value": "[parameters('BackEndUrl')]"
+          },
+          "LinkedTemplatesUrlQueryString": {
+            "value": "[parameters('LinkedTemplatesUrlQueryString')]"
+          },
+          "PolicyXMLBaseUrl": {
+            "value": "[parameters('PolicyXMLBaseUrl')]"
+          }
+        }
+      },
+      "name": "netcaApiTemplate",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2018-05-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'productsTemplate')]",
+        "[resourceId('Microsoft.Resources/deployments', 'backendsTemplate')]"
+      ]
+    },
+    {
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('LinkedTemplatesBaseUrl'), '/netca.productAPIs.template.json', parameters('LinkedTemplatesUrlQueryString'))]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "ApimServiceName": {
+            "value": "[parameters('ApimServiceName')]"
+          }
+        }
+      },
+      "name": "productAPIsTemplate",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2018-05-01",
+      "dependsOn": [
+        "[resourceId('Microsoft.Resources/deployments', 'productsTemplate')]"
+      ]
+    }
+  ]
+}

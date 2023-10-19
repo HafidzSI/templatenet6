@@ -1,0 +1,33 @@
+version: 0.0.1
+apimServiceName: ut-apim
+apis:
+  - name: netca
+    openApiSpec: https://localhost/swagger/v1/swagger.json
+    policy: D:\Development\DAD\Backend\NetCa\devops\APIM\netca\policies\Backend-Policy.xml
+    suffix: dca/netca
+    subscriptionRequired: true
+    isCurrent: true
+    protocols: https
+    revision: 1
+    revisionDescription: NETCA first revision
+    products: DAD
+backends:
+  - title: DAD-NETCA
+    description: DAD-NETCA
+    url: https://localhost
+    protocol: http
+    tls:
+      validateCertificateChain: false
+      validateCertificateName: false
+products:
+  - name: DAD
+    displayName: DAD
+    description: Condition-Based Maintenance
+    terms: some terms
+    subscriptionRequired: true
+    approvalRequired: false
+    state: published
+outputLocation: D:\Development\APIM\result
+linked: true
+linkedTemplatesBaseUrl: https://xxx.blob.core.windows.net/dad/netca
+linkedTemplatesUrlQueryString: query
